@@ -139,6 +139,7 @@ public class PlayerMovementGrappling : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
+        
         // start crouch
         if (Input.GetKeyDown(crouchKey))
         {
@@ -155,6 +156,7 @@ public class PlayerMovementGrappling : MonoBehaviour
 
             crouching = false;
         }
+        
     }
 
     bool keepMomentum;

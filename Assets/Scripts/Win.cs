@@ -13,4 +13,10 @@ public class Win : MonoBehaviour
             OnLevelFinish();
 
     }
+
+    public static void TriggerWin()
+    {
+        if (OnLevelFinish != null)
+            OnLevelFinish();
+    }
 }

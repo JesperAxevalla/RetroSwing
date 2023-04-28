@@ -14,6 +14,9 @@ public class MasterScript : MonoBehaviour
     public List<string> levels;
     private int currentLevel = -1;
 
+    public static int orbs = 0;
+    public static int orbsCollected = 0;
+
     private void OnEnable()
     {
         Win.OnLevelFinish += NextLevel;
@@ -33,6 +36,8 @@ public class MasterScript : MonoBehaviour
 
     void NextLevel()
     {
+        orbs = 0;
+
         Timer.NextLevel();
 
         SceneManager.LoadScene("Level" + (currentLevel+1), LoadSceneMode.Additive);
@@ -52,8 +57,11 @@ public class MasterScript : MonoBehaviour
 
         if (deb)
         {
+            orbs = 0;
             var s = SceneManager.GetSceneByName("Level" + currentLevel);
-            SceneManager.LoadScene(s.name, LoadSceneMode.Additive);
+            StartCoroutine(LoadSceneWait(s.name));
+            //SceneManager.LoadScene(s.name, LoadSceneMode.Additive);
+            Debug.Log("Debug orbs " + orbs);
         }
         else
         {
@@ -98,6 +106,11 @@ public class MasterScript : MonoBehaviour
     
     }
 
+    IEnumerator LoadSceneWait(string scene)
+    {
+        AsyncOperation ao = SceneManager.LoadSceneAsync(scene,LoadSceneMode.Additive);
+        yield return ao;
+    }
     IEnumerator UnloadSceneWait(string scene)
     {
         AsyncOperation ao = SceneManager.UnloadSceneAsync(scene);
