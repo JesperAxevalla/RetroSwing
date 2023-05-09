@@ -16,4 +16,10 @@ public class Notification : MonoBehaviour
             OnNotification(notificationMessage);
 
     }
+
+    public static void Nofify(string msg)
+    {
+        if (OnNotification != null)
+            OnNotification(msg);
+    }
 }

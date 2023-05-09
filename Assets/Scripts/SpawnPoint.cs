@@ -17,7 +17,9 @@ public class SpawnPoint : MonoBehaviour
     public void SetSpawn()
     {
         MasterScript.spawnPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
+        MasterScript.spawnRot = this.transform.rotation;
         Debug.Log("Set spawn to " + MasterScript.spawnPos);
+        Debug.Log("Set spawn ROT to " + MasterScript.spawnRot);
 
         if (OnSpawnSet != null)
             OnSpawnSet();

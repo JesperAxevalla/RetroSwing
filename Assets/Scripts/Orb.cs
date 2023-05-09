@@ -11,7 +11,7 @@ public class Orb : MonoBehaviour
         if (other.gameObject.layer == 6)
         {
             MasterScript.orbsCollected++;
-            Debug.Log("Collected " + MasterScript.orbsCollected + "/" + MasterScript.orbs);
+            Notification.Nofify("Obtained [ORB] " + MasterScript.orbsCollected + "/" + MasterScript.orbs);
             if (MasterScript.orbsCollected == MasterScript.orbs)
                 Win.TriggerWin();
             gameObject.SetActive(false);

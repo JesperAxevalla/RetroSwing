@@ -1461,7 +1461,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh44142
+  m_Name: pb_Mesh25768
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2125,7 +2125,7 @@ GameObject:
   - component: {fileID: 1623225836}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2484,6 +2484,8 @@ MonoBehaviour:
   multiplier: 0.1
   orientation: {fileID: 1231071163}
   camHolder: {fileID: 1400484299}
+  xRotation: 0
+  yRotation: 0
   useFluentFov: 0
   pm: {fileID: 0}
   rb: {fileID: 0}
@@ -3235,7 +3237,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh43960
+  m_Name: pb_Mesh25586
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2

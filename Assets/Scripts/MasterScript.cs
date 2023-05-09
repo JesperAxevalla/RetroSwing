@@ -10,6 +10,7 @@ public class MasterScript : MonoBehaviour
     public static event NextLevelEvent OnNextLevel;
 
     public static Vector3 spawnPos;
+    public static Quaternion spawnRot;
 
     public List<string> levels;
     private int currentLevel = -1;
@@ -53,7 +54,11 @@ public class MasterScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //SceneManager.LoadScene("UI_MainMenu", LoadSceneMode.Additive);
+        //return;
+
         var deb = DebugStart();
+
 
         if (deb)
         {

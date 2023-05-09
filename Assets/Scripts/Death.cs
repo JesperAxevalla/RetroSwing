@@ -13,4 +13,10 @@ public class Death : MonoBehaviour
             OnDeath();
 
     }
+
+    public static void KillPlayer()
+    {
+        if (OnDeath != null)
+            OnDeath();
+    }
 }
