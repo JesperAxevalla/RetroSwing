@@ -13,6 +13,13 @@ public class Turret : MonoBehaviour
     [SerializeField]
     private float range = 10f;
 
+    private float lockedTimer = 0f;
+    [SerializeField]
+    private float lockedTrigger = 0.5f;
+    [SerializeField]
+    private float viewAngle = 4f;
+    private bool locked = false;
+
     [SerializeField]
     private GameObject laserPrefab;
 
@@ -24,47 +31,91 @@ public class Turret : MonoBehaviour
 
         LineRenderer lr = tip.GetComponent<LineRenderer>();
         lr.enabled = true;
+
+        LaserLengthUpdate();
+    }
+
+    bool PlayerInRange()
+    {
+        float dist = Vector3.Distance(player.transform.position, transform.position);
+        return dist < range;
+    }
+
+    bool CanSeePlayer()
+    {
+        Vector3 targetDir = player.transform.position - transform.position;
+        float angle = Vector3.Angle(targetDir, transform.forward);
+
+        if (angle > viewAngle) return false;
+
+
+
+        RaycastHit hit;
+        
+
+        Physics.Raycast(tip.transform.position, player.transform.position - tip.transform.position, out hit, range);
+
+        if (hit.transform == null) return false;
+        if (hit.transform.gameObject.tag == "Player") return true;
+        return false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        LaserLengthUpdate();
+
+        if (!PlayerInRange()) return;
+
         RotateTowardsTarget(player.transform);
 
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            Instantiate(laserPrefab, this.transform.position, this.transform.rotation);
-        }
+        if (CanSeePlayer())
+            lockedTimer += Time.deltaTime;
+        else
+            lockedTimer -= Time.deltaTime;
 
+        if (lockedTimer >= lockedTrigger)
+        {
+            Fire();
+            lockedTimer = 0f;
+        }
+    }
+
+
+    void LaserLengthUpdate()
+    {
+        lr_need_update = false;
+
+        RaycastHit hit;
+        
+        Physics.Raycast(tip.transform.position, tip.transform.forward, out hit, range);
+
+        if (hit.transform != null)
+        {
+            LineRenderer lr = tip.GetComponent<LineRenderer>();
+            lr.SetPosition(1, new Vector3(0, 0, Vector3.Distance(tip.transform.position, hit.point)+0.5f));
+        }
     }
 
     void Fire()
     {
-
+        Instantiate(laserPrefab, this.transform.position, this.transform.rotation);
     }
 
+    bool lr_need_update;
 
     void RotateTowardsTarget(Transform target)
     {
-        // Determine which direction to rotate towards
+        lr_need_update = true;
+
         Vector3 targetDirection = target.position - transform.position;
-
-        // The step size is equal to speed times frame time.
         float singleStep = rotationSpeed * Time.deltaTime;
-
-        // Rotate the forward vector towards the target direction by one step
-        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
-
-        // Draw a ray pointing at our target in
-        Debug.DrawRay(transform.position, newDirection, Color.red);
-
-        // Calculate a rotation a step closer to the target and applies rotation to this object
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 1.0f);
         transform.rotation = Quaternion.LookRotation(newDirection);
     }
 
     void OnDrawGizmosSelected()
     {
-        // Draw a yellow sphere at the transform's position
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }
