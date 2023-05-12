@@ -7,11 +7,15 @@ public class Win : MonoBehaviour
     public delegate void WinAction();
     public static event WinAction OnLevelFinish;
 
+    bool hasTriggered;
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 6 && OnLevelFinish != null)
+        if (collision.gameObject.layer == 6 && OnLevelFinish != null && !hasTriggered)
+        {
+            hasTriggered = true;
             OnLevelFinish();
-
+        }
     }
 
     public static void TriggerWin()

@@ -70,6 +70,7 @@ public class MasterScript : MonoBehaviour
         }
         else
         {
+            Debug.Log("Non-debug start");
             currentLevel = 0;
             NextLevel();
         }
