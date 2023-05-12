@@ -99,7 +99,7 @@ public class Turret : MonoBehaviour
 
     void Fire()
     {
-        Instantiate(laserPrefab, this.transform.position, this.transform.rotation);
+        Instantiate(laserPrefab, tip.transform.position + (tip.transform.forward * 3f), this.transform.rotation);
     }
 
     bool lr_need_update;

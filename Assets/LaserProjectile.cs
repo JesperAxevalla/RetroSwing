@@ -21,12 +21,12 @@ public class LaserProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.tag == "Player")
             Death.KillPlayer();
 
-        Debug.Log("HIT");
+        Debug.Log("LASER HIT: " + collision.gameObject.tag + " LAYER: " + collision.gameObject.layer + " GAME OBJ: "+ collision.gameObject.name);
 
-        Destroy(this,0.1f);
+        Destroy(this.gameObject,0.1f);
 
     }
 }
