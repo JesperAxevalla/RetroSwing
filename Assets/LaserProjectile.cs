@@ -19,14 +19,33 @@ public class LaserProjectile : MonoBehaviour
         rb.velocity = this.transform.rotation * Vector3.forward * speed;
     }
 
+    private void OnEnable()
+    {
+        Win.OnLevelFinish += LaserHit;
+    }
+
+    private void OnDisable()
+    {
+        Win.OnLevelFinish -= LaserHit;
+    }
+
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag == "Player")
-            Death.KillPlayer();
+        if (!collision.isTrigger)
+        {
 
-        Debug.Log("LASER HIT: " + collision.gameObject.tag + " LAYER: " + collision.gameObject.layer + " GAME OBJ: "+ collision.gameObject.name);
+            if (collision.gameObject.tag == "Player")
+                Death.KillPlayer();
 
-        Destroy(this.gameObject,0.1f);
+            LaserHit();
+        }
+
 
     }
+
+    void LaserHit()
+    {
+        Destroy(this.gameObject);
+    }
+
 }

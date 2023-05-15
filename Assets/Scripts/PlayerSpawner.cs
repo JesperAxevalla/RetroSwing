@@ -27,11 +27,10 @@ public class PlayerSpawner : MonoBehaviour
 
     public void Spawn()
     {
-        Debug.Log("Spawning at " + MasterScript.spawnPos);
         var rb = this.GetComponent<Rigidbody>();
         var ch = this.GetComponent<PlayerCam>();
         ch.yRotation = MasterScript.spawnRot.eulerAngles.y;
-        Debug.Log("ROT " + MasterScript.spawnRot.eulerAngles);
+        Debug.Log("Spawning at " + MasterScript.spawnPos + " ROT: " + MasterScript.spawnRot.eulerAngles);
         ch.xRotation = 0f;
         this.transform.rotation = MasterScript.spawnRot;
         rb.position = MasterScript.spawnPos;

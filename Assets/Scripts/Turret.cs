@@ -6,8 +6,16 @@ public class Turret : MonoBehaviour
 {
     private GameObject player;
 
+    [Header("References")]
+    [SerializeField]
+    private GameObject body;
     [SerializeField]
     private GameObject tip;
+    [SerializeField]
+    private GameObject laserPrefab;
+
+
+    [Header("Settings")]
     [SerializeField]
     private float rotationSpeed = 0.6f;
     [SerializeField]
@@ -20,8 +28,6 @@ public class Turret : MonoBehaviour
     private float viewAngle = 4f;
     private bool locked = false;
 
-    [SerializeField]
-    private GameObject laserPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -37,23 +43,25 @@ public class Turret : MonoBehaviour
 
     bool PlayerInRange()
     {
-        float dist = Vector3.Distance(player.transform.position, transform.position);
+        float dist = Vector3.Distance(player.transform.position, body.transform.position);
         return dist < range;
     }
 
     bool CanSeePlayer()
     {
-        Vector3 targetDir = player.transform.position - transform.position;
-        float angle = Vector3.Angle(targetDir, transform.forward);
+        Vector3 targetDir = player.transform.position - body.transform.position;
+        float angle = Vector3.Angle(targetDir, body.transform.forward);
 
         if (angle > viewAngle) return false;
 
 
 
         RaycastHit hit;
-        
 
-        Physics.Raycast(tip.transform.position, player.transform.position - tip.transform.position, out hit, range);
+        int layerMask = 1 << 21;
+        layerMask = ~21;
+
+        Physics.Raycast(tip.transform.position, player.transform.position - tip.transform.position, out hit, range, layerMask);
 
         if (hit.transform == null) return false;
         if (hit.transform.gameObject.tag == "Player") return true;
@@ -92,14 +100,18 @@ public class Turret : MonoBehaviour
 
         if (hit.transform != null)
         {
-            LineRenderer lr = tip.GetComponent<LineRenderer>();
-            lr.SetPosition(1, new Vector3(0, 0, Vector3.Distance(tip.transform.position, hit.point)+0.5f));
+            if(!hit.collider.isTrigger)
+            {
+
+                LineRenderer lr = tip.GetComponent<LineRenderer>();
+                lr.SetPosition(1, new Vector3(0, 0, Vector3.Distance(tip.transform.position, hit.point)+0.5f));
+            }
         }
     }
 
     void Fire()
     {
-        Instantiate(laserPrefab, tip.transform.position + (tip.transform.forward * 3f), this.transform.rotation);
+        Instantiate(laserPrefab, tip.transform.position + (tip.transform.forward * 3f), body.transform.rotation);
     }
 
     bool lr_need_update;
@@ -108,10 +120,10 @@ public class Turret : MonoBehaviour
     {
         lr_need_update = true;
 
-        Vector3 targetDirection = target.position - transform.position;
+        Vector3 targetDirection = target.position - body.transform.position;
         float singleStep = rotationSpeed * Time.deltaTime;
-        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 1.0f);
-        transform.rotation = Quaternion.LookRotation(newDirection);
+        Vector3 newDirection = Vector3.RotateTowards(body.transform.forward, targetDirection, singleStep, 1.0f);
+        body.transform.rotation = Quaternion.LookRotation(newDirection);
     }
 
     void OnDrawGizmosSelected()

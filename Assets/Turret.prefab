@@ -748,9 +748,8 @@ GameObject:
   - component: {fileID: 5832582371519652024}
   - component: {fileID: 5033956643684002432}
   - component: {fileID: 4371086111669892259}
-  - component: {fileID: 8724116542985621612}
   m_Layer: 0
-  m_Name: Turret Main
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -844,25 +843,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8724116542985621612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6269787984995818984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e3a94d48ffd7d447996fe3675277b0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tip: {fileID: 5092441878518490760}
-  rotationSpeed: 0.8
-  range: 32
-  lockedTrigger: 0.6
-  viewAngle: 5
-  laserPrefab: {fileID: 5562778669555313488, guid: cc9baa7c0c0d8d942b038b75899e121f,
-    type: 3}
 --- !u!1 &6994484101922048519
 GameObject:
   m_ObjectHideFlags: 0
@@ -872,6 +852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7676385145278107298}
+  - component: {fileID: 5519676321726196027}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -896,3 +877,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5519676321726196027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6994484101922048519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e3a94d48ffd7d447996fe3675277b0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 6269787984995818984}
+  tip: {fileID: 5092441878518490760}
+  laserPrefab: {fileID: 5562778669555313488, guid: cc9baa7c0c0d8d942b038b75899e121f,
+    type: 3}
+  rotationSpeed: 0.9
+  range: 83.3
+  lockedTrigger: 0.6
+  viewAngle: 10

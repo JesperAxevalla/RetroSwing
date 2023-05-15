@@ -18,11 +18,21 @@ public class SpawnPoint : MonoBehaviour
     {
         MasterScript.spawnPos = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z);
         MasterScript.spawnRot = this.transform.rotation;
-        Debug.Log("Set spawn to " + MasterScript.spawnPos);
-        Debug.Log("Set spawn ROT to " + MasterScript.spawnRot);
 
         if (OnSpawnSet != null)
             OnSpawnSet();
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 dirPos = this.gameObject.transform.position;
+        dirPos.x -= 1f;
+        dirPos.y += 0.5f;
+        Gizmos.DrawCube(dirPos, new Vector3(-2f, 0.2f, 0.2f));
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(this.gameObject.transform.position, new Vector3(1f, 2f, 1f));
     }
 
 }
