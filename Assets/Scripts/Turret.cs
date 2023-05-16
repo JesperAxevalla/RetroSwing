@@ -30,9 +30,13 @@ public class Turret : MonoBehaviour
 
     private Vector3 originalPosition;
 
+    private int layerMask;
+
     // Start is called before the first frame update
     void Start()
     {
+        layerMask = LayerMask.GetMask("whatIsPlayer");
+
         originalPosition = tip.transform.position;
         originalPosition += tip.transform.forward * 2;
 
@@ -54,9 +58,6 @@ public class Turret : MonoBehaviour
     bool PlayerLOS()
     {
         RaycastHit hit;
-
-        int layerMask = 1 << 21;
-        layerMask = ~21;
 
         Physics.Raycast(tip.transform.position, player.transform.position - tip.transform.position, out hit, range, layerMask);
 

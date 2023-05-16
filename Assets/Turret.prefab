@@ -186,7 +186,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 30}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.02
+    widthMultiplier: 0.002
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 23
+  m_VersionIndex: 26
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -895,5 +895,6 @@ MonoBehaviour:
     type: 3}
   rotationSpeed: 0.9
   range: 83.3
+  lockedTimer: 0
   lockedTrigger: 0.6
   viewAngle: 10
