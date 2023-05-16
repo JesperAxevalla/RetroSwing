@@ -9,7 +9,6 @@ public class Notification : MonoBehaviour
 
     public string notificationMessage;
 
-
     private void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.layer == 6 && OnNotification != null)

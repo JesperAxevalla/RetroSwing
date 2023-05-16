@@ -21,17 +21,21 @@ public class Turret : MonoBehaviour
     [SerializeField]
     private float range = 10f;
 
-    private float lockedTimer = 0f;
+    public float lockedTimer = 0f;
     [SerializeField]
     private float lockedTrigger = 0.5f;
     [SerializeField]
     private float viewAngle = 4f;
     private bool locked = false;
 
+    private Vector3 originalPosition;
 
     // Start is called before the first frame update
     void Start()
     {
+        originalPosition = tip.transform.position;
+        originalPosition += tip.transform.forward * 2;
+
         var a = GameObject.FindGameObjectsWithTag("Player");
         player = a[0];
 
@@ -47,15 +51,8 @@ public class Turret : MonoBehaviour
         return dist < range;
     }
 
-    bool CanSeePlayer()
+    bool PlayerLOS()
     {
-        Vector3 targetDir = player.transform.position - body.transform.position;
-        float angle = Vector3.Angle(targetDir, body.transform.forward);
-
-        if (angle > viewAngle) return false;
-
-
-
         RaycastHit hit;
 
         int layerMask = 1 << 21;
@@ -68,27 +65,50 @@ public class Turret : MonoBehaviour
         return false;
     }
 
+    bool PlayerInViewcone()
+    {
+        Vector3 targetDir = player.transform.position - body.transform.position;
+        float angle = Vector3.Angle(targetDir, body.transform.forward);
+
+        if (angle > viewAngle) return false;
+        return true;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        LaserLengthUpdate();
-
-        if (!PlayerInRange()) return;
-
-        RotateTowardsTarget(player.transform);
-
-        if (CanSeePlayer())
-            lockedTimer += Time.deltaTime;
-        else
-            lockedTimer -= Time.deltaTime;
+        if (lr_need_update)
+            LaserLengthUpdate();
 
         if (lockedTimer >= lockedTrigger)
-        {
             Fire();
-            lockedTimer = 0f;
+
+        if (PlayerInRange())
+        {
+            if (PlayerLOS())
+            {
+                RotateTowardsTarget(player.transform.position);
+                if (PlayerInViewcone())
+                    lockedTimer += Time.deltaTime;
+            }
+            else
+                CantSee();
         }
+        else
+            CantSee();
+
     }
 
+    void CantSee()
+    {
+        if (lockedTimer > 0f)
+            lockedTimer -= Time.deltaTime;
+        else if (lockedTimer < 0f)
+            lockedTimer = 0f;
+        if (lockedTimer == 0f)
+            RotateTowardsTarget(originalPosition);
+
+    }
 
     void LaserLengthUpdate()
     {
@@ -111,16 +131,17 @@ public class Turret : MonoBehaviour
 
     void Fire()
     {
+        lockedTimer = 0f;
         Instantiate(laserPrefab, tip.transform.position + (tip.transform.forward * 3f), body.transform.rotation);
     }
 
     bool lr_need_update;
 
-    void RotateTowardsTarget(Transform target)
+    void RotateTowardsTarget(Vector3 target)
     {
         lr_need_update = true;
 
-        Vector3 targetDirection = target.position - body.transform.position;
+        Vector3 targetDirection = target - body.transform.position;
         float singleStep = rotationSpeed * Time.deltaTime;
         Vector3 newDirection = Vector3.RotateTowards(body.transform.forward, targetDirection, singleStep, 1.0f);
         body.transform.rotation = Quaternion.LookRotation(newDirection);
