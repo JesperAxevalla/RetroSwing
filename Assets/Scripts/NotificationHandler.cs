@@ -8,7 +8,6 @@ public class NotificationHandler : MonoBehaviour
     public TextMeshProUGUI textGUI;
 
     public float fadeTime = 0.5f;
-    public float holdTime = 1.5f;
 
     private bool isActive;
 
@@ -23,7 +22,7 @@ public class NotificationHandler : MonoBehaviour
         Notification.OnNotification -= DisplayMessage;
     }
 
-    private IEnumerator FadeText()
+    private IEnumerator FadeText(float holdTime)
     {
         isActive = true;
 
@@ -53,12 +52,12 @@ public class NotificationHandler : MonoBehaviour
         yield break;
     }
 
-    void DisplayMessage(string msg)
+    void DisplayMessage(string msg, float holdTime)
     {
         textGUI.text = msg;
 
         if (!isActive)
-            StartCoroutine(FadeText());
+            StartCoroutine(FadeText(holdTime));
     }
 
 }
