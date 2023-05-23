@@ -25,14 +25,16 @@ public class SpawnPoint : MonoBehaviour
 
     public void OnDrawGizmos()
     {
+        Gizmos.matrix = transform.localToWorldMatrix;
+
         Gizmos.color = Color.red;
-        Vector3 dirPos = this.gameObject.transform.position;
-        dirPos.x -= 1f;
-        dirPos.y += 0.5f;
-        Gizmos.DrawCube(dirPos, new Vector3(-2f, 0.2f, 0.2f));
+        //Vector3 dirPos = this.gameObject.transform.position;
+        //dirPos.x -= 1f;
+        //dirPos.y += 0.5f;
+        Gizmos.DrawCube(new Vector3(0,0,1), new Vector3(-0.2f, -0.2f, 2f));
 
         Gizmos.color = Color.green;
-        Gizmos.DrawCube(this.gameObject.transform.position, new Vector3(1f, 2f, 1f));
+        Gizmos.DrawCube(Vector3.zero, new Vector3(1f, 2f, 1f));
     }
 
 }
